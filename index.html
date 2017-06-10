@@ -54,11 +54,11 @@
 
         var list = document.getElementById("listToDo");
         if (task.checked) {
-            list.innerHTML += '<li class="checked" onclick="clickCheck(this)" id="'+ task.id +'"><div id="checkImg"></div><p>' + task.task +'</p><button class="close" id="remove">X</button><hr></li>';
+            list.innerHTML += '<li class="checked" onclick="clickCheck(this)" id="'+ task.id +'"><div id="checkImg"><img src="./images/check.png"/></div><p>' + task.task +'</p><button class="close" id="remove">X</button><hr></li>';
 
         }
         else{
-         list.innerHTML += '<li onclick="clickCheck(this)" id="'+ task.id +'"><div id="checkImg"></div><p>' + task.task +'</p><button class="close" id="remove">X</button><hr></li>';
+         list.innerHTML += '<li onclick="clickCheck(this)" id="'+ task.id +'"><div id="checkImg"><img src="./images/check.png"/></div><p>' + task.task +'</p><button class="close" id="remove">X</button><hr></li>';
 
         }
         removeButton();
@@ -103,7 +103,7 @@ function toggleCheckbox(element) {
         task.task = item;
         task.checked = false;
         localStorage.setItem(taskID, JSON.stringify(task))
-        list.innerHTML += '<li onclick="clickCheck(this)" id="'+ taskID +'"><div id="checkImg"></div><p>' + item +'</p><button class="close" id="remove">X</button><hr></li>';
+        list.innerHTML += '<li onclick="clickCheck(this)" id="'+ taskID +'"><div id="checkImg"><img src="./images/check.png"/></div><p>' + item +'</p><button class="close" id="remove">X</button><hr></li>';
         removeButton();
         n++;
     }
