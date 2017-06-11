@@ -38,7 +38,20 @@
     
     render();
     
+    //autofocus input field onload
+    window.onload = function() {
+        var input = document.getElementById("newItem").focus();
+    }
     
+    document.getElementById("newItem")
+    .addEventListener("keyup", function(event) {
+    event.preventDefault();
+    if (event.keyCode == 13) {
+        add();
+    }
+});
+    
+    //retrieve existing todos from storage
     function render(){
         for (i=0; i < localStorage.length; i++){
             var retrievedObject = localStorage.getItem("task" + n);
@@ -91,19 +104,21 @@ function toggleCheckbox(element) {
 
 
     function add(){
-        var item = document.getElementById("newItem").value;
+        var item = document.getElementById("newItem");
         var list = document.getElementById("listToDo");
-        if (item=="") {
+        if (item.value=="") {
             alert("You still need to enter a todo!")
         }
         else{
         var taskID = "task" + n;
         var task = {};
         task.id = taskID;
-        task.task = item;
+        task.task = item.value;
         task.checked = false;
         localStorage.setItem(taskID, JSON.stringify(task))
-        list.innerHTML += '<li onclick="clickCheck(this)" id="'+ taskID +'"><div id="checkImg"><img src="./images/check.png"/></div><p>' + item +'</p><button class="close" id="remove">X</button><hr></li>';
+        list.innerHTML += '<li onclick="clickCheck(this)" id="'+ taskID +'"><div id="checkImg"><img src="./images/check.png"/></div><p>' + item.value +'</p><button class="close" id="remove">X</button><hr></li>';
+        item.value ="";
+        item.focus();
         removeButton();
         n++;
     }
@@ -155,6 +170,20 @@ function toggleCheckbox(element) {
 
           
     }
+    
+    /*
+    function reorderTodoStorage() {
+        var todoItems = document.getElementsByTag("LI");
+        for (i=0; i < todoItems.length; i++){
+            var item = todoItems[i];
+             var retrievedObject = localStorage.getItem(item.id);
+    var task = JSON.parse(retrievedObject)
+    localStorage.removeItem(item.id);
+    task.id = "task" + i;
+    task.checked = false;
+    localStorage.setItem(task.id, JSON.stringify(task));
+        }
+    }*/
     
     function removeButton() {
          for (var i = 0; i < close.length; i++) {
