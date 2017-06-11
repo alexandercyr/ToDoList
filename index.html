@@ -37,9 +37,7 @@
 
     
     render();
-    
-    //autofocus input field onload
-    window.onload = function() {
+     window.onload = function() {
         var input = document.getElementById("newItem").focus();
     }
     
@@ -51,7 +49,8 @@
     }
 });
     
-    //retrieve existing todos from storage
+    
+    
     function render(){
         for (i=0; i < localStorage.length; i++){
             var retrievedObject = localStorage.getItem("task" + n);
@@ -117,9 +116,9 @@ function toggleCheckbox(element) {
         task.checked = false;
         localStorage.setItem(taskID, JSON.stringify(task))
         list.innerHTML += '<li onclick="clickCheck(this)" id="'+ taskID +'"><div id="checkImg"><img src="./images/check.png"/></div><p>' + item.value +'</p><button class="close" id="remove">X</button><hr></li>';
-        item.value ="";
-        item.focus();
         removeButton();
+        item.value = "";
+        item.focus();
         n++;
     }
 
@@ -167,23 +166,11 @@ function toggleCheckbox(element) {
             localStorage.removeItem(item.id)
 
         }
+            localStorage.clear();
 
           
     }
     
-    /*
-    function reorderTodoStorage() {
-        var todoItems = document.getElementsByTag("LI");
-        for (i=0; i < todoItems.length; i++){
-            var item = todoItems[i];
-             var retrievedObject = localStorage.getItem(item.id);
-    var task = JSON.parse(retrievedObject)
-    localStorage.removeItem(item.id);
-    task.id = "task" + i;
-    task.checked = false;
-    localStorage.setItem(task.id, JSON.stringify(task));
-        }
-    }*/
     
     function removeButton() {
          for (var i = 0; i < close.length; i++) {
@@ -196,6 +183,40 @@ function toggleCheckbox(element) {
             }
         }
     }
+    
+   /*
+    function reorderTodoStorage() {
+        n = 0;
+         for (i=0; i < localStorage.length; i++){
+            var retrievedObject = localStorage.getItem("task" + n);
+            var task = JSON.parse(retrievedObject)
+            console.log(task)
+        
+            while (task == null) {
+                n++;
+                retrievedObject = localStorage.getItem("task" + n);
+            task = JSON.parse(retrievedObject);
+            console.log(n);
+            }
+            localStorage.removeItem(task.id);
+            var todo = document.getElementById(task.id);
+            task.id = "task"+i;
+            todo.id = task.id;
+            localStorage.setItem(task.id, JSON.stringify(task));
+         }
+
+        
+        var todoItems = document.getElementsByTagName("LI");
+        for (i=0; i < todoItems.length; i++){
+            var item = todoItems[i];
+             var retrievedObject = localStorage.getItem(item.id);
+    var task = JSON.parse(retrievedObject)
+    localStorage.removeItem(item.id);
+    task.id = "task" + i;
+    task.checked = false;
+    localStorage.setItem(task.id, JSON.stringify(task));
+        }
+    }*/
 
 </script>
 </body>
