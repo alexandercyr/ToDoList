@@ -29,18 +29,20 @@
     var n = 0;
     var close = document.getElementsByClassName("close");
     var checked = document.getElementsByClassName("checked");
-    var allItems = document.getElementsByTagName("LI");
     var list = document.getElementById("listToDo");
+    
     document.getElementById('removeAll').addEventListener('click', removeAll);
     document.getElementById('add').addEventListener('click', add);
     document.getElementById('removeChecked').addEventListener('click', removeChecked);
 
-    
     render();
-     window.onload = function() {
+    
+    //autofocus textfield onload 
+    window.onload = function() {
         var input = document.getElementById("newItem").focus();
     }
     
+    //press enter to add new todo
     document.getElementById("newItem")
     .addEventListener("keyup", function(event) {
     event.preventDefault();
@@ -50,7 +52,7 @@
 });
     
     
-    
+    //initialize todos from local storage
     function render(){
         for (i=0; i < localStorage.length; i++){
             var retrievedObject = localStorage.getItem("task" + n);
@@ -60,133 +62,110 @@
             while (task == null) {
                 n++;
                 retrievedObject = localStorage.getItem("task" + n);
-            task = JSON.parse(retrievedObject);
-            console.log(n);
+                task = JSON.parse(retrievedObject);
+                console.log(n);
             }
 
         var list = document.getElementById("listToDo");
         if (task.checked) {
-            list.innerHTML += '<li class="checked" onclick="clickCheck(this)" id="'+ task.id +'"><div id="checkImg"><img src="./images/check.png"/></div><p>' + task.task +'</p><button class="close" id="remove">X</button><hr></li>';
-
+            list.innerHTML += '<li class="checked" onclick="toggleCheckbox(this)" id="'+ task.id +'"><div id="checkImg"><img src="./images/check.png"/></div><p>' + task.task +'</p><button class="close" id="remove">X</button><hr></li>';
         }
         else{
-         list.innerHTML += '<li onclick="clickCheck(this)" id="'+ task.id +'"><div id="checkImg"><img src="./images/check.png"/></div><p>' + task.task +'</p><button class="close" id="remove">X</button><hr></li>';
-
+         list.innerHTML += '<li onclick="toggleCheckbox(this)" id="'+ task.id +'"><div id="checkImg"><img src="./images/check.png"/></div><p>' + task.task +'</p><button class="close" id="remove">X</button><hr></li>';
         }
         removeButton();
         n++;
         }
     }
 
-function toggleCheckbox(element) {
-    var checkedToDo = document.getElementById(element.parentNode.id);
-
-    if(element.checked) {
-    // Checkbox is checked.
-    checkedToDo.className = "checked";
-    var retrievedObject = localStorage.getItem(element.parentNode.id);
-    var task = JSON.parse(retrievedObject)
-    task.checked = true;
-    localStorage.setItem(task.id, JSON.stringify(task));
-
     
-  } else {
-    checkedToDo.className = ("unchecked");
-    var retrievedObject = localStorage.getItem(element.parentNode.id);
-    var task = JSON.parse(retrievedObject)
-    task.checked = false;
-    localStorage.setItem(task.id, JSON.stringify(task));
-
-  }
     
-}
 
-
+    // add new item to todo list and local storage
     function add(){
         var item = document.getElementById("newItem");
         var list = document.getElementById("listToDo");
+        //check for empty input field
         if (item.value=="") {
             alert("You still need to enter a todo!")
         }
         else{
-        var taskID = "task" + n;
-        var task = {};
-        task.id = taskID;
-        task.task = item.value;
-        task.checked = false;
-        localStorage.setItem(taskID, JSON.stringify(task))
-        list.innerHTML += '<li onclick="clickCheck(this)" id="'+ taskID +'"><div id="checkImg"><img src="./images/check.png"/></div><p>' + item.value +'</p><button class="close" id="remove">X</button><hr></li>';
-        removeButton();
-        item.value = "";
-        item.focus();
-        n++;
-    }
-
-    }
-    function clickCheck(todo) {
-        
-            var checkedToDo = document.getElementById(todo.id);
-
-        var name = todo.className
-        if (name == "checked") {
-            checkedToDo.className = ("unchecked");
-    var retrievedObject = localStorage.getItem(todo.id);
-    if (retrievedObject) {
-    var task = JSON.parse(retrievedObject)
-    task.checked = false;
-    localStorage.setItem(task.id, JSON.stringify(task));
-    }
-        }
-        else{
-            checkedToDo.className = "checked";
-    var retrievedObject = localStorage.getItem(todo.id);
-    if (retrievedObject) {
-         var task = JSON.parse(retrievedObject)
-    task.checked = true;
-    localStorage.setItem(task.id, JSON.stringify(task));
-    }
-   
+            var taskID = "task" + n;
+            var task = {};
+            task.id = taskID;
+            task.task = item.value;
+            task.checked = false;
+            localStorage.setItem(taskID, JSON.stringify(task))
+            list.innerHTML += '<li onclick="toggleCheckbox(this)" id="'+ taskID +'"><div id="checkImg"><img src="./images/check.png"/></div><p>' + item.value +'</p><button class="close" id="remove">X</button><hr></li>';
+            removeButton();
+            item.value = "";
+            item.focus();
+            n++;
         }
     }
     
+    function toggleCheckbox(todo) {  
+        var checkedToDo = document.getElementById(todo.id);
+        var name = todo.className 
+        //if item is checked, change to unchecked
+        if (name == "checked") {
+            checkedToDo.className = ("unchecked");
+            var retrievedObject = localStorage.getItem(todo.id);
+            if (retrievedObject) {
+                var task = JSON.parse(retrievedObject)
+                task.checked = false;
+                localStorage.setItem(task.id, JSON.stringify(task));
+            }
+        }
+        //if item is unchecked, changed to checked
+        else{
+            checkedToDo.className = "checked";
+            var retrievedObject = localStorage.getItem(todo.id);
+            if (retrievedObject) {
+                var task = JSON.parse(retrievedObject)
+                task.checked = true;
+                localStorage.setItem(task.id, JSON.stringify(task));
+            }
+        }
+    }
+    
+    //remove all items with 'checked' class
     function removeChecked() {
         for (var i = 0; i < checked.length; i++) {
             var checkedElement = checked[i];
             checkedElement.style.display = "none";
             localStorage.removeItem(checkedElement.id)
-
-        }
-
-          
+        }       
     }
+    
+    //remove all items from list and local storage
     function removeAll() {
         for (var i = 0; i < allItems.length; i++) {
             var item = allItems[i];
             item.style.display = "none";
             localStorage.removeItem(item.id)
-
         }
-            localStorage.clear();
-
-          
+            localStorage.clear();     
     }
     
-    
+    //set up for remove button functionality
     function removeButton() {
          for (var i = 0; i < close.length; i++) {
             close[i].onclick = function() {
             var div = this.parentElement;
             localStorage.removeItem(this.parentElement.id)
             n--;
-
             div.style.display = "none";
             }
         }
     }
     
    /*
+   //reformat task id number for each item when removing items
+   
     function reorderTodoStorage() {
         n = 0;
+         //option 1: for each todo in local storage, get item 'n', if null n++ until item found, change id to 'i', set new item
          for (i=0; i < localStorage.length; i++){
             var retrievedObject = localStorage.getItem("task" + n);
             var task = JSON.parse(retrievedObject)
@@ -206,15 +185,7 @@ function toggleCheckbox(element) {
          }
 
         
-        var todoItems = document.getElementsByTagName("LI");
-        for (i=0; i < todoItems.length; i++){
-            var item = todoItems[i];
-             var retrievedObject = localStorage.getItem(item.id);
-    var task = JSON.parse(retrievedObject)
-    localStorage.removeItem(item.id);
-    task.id = "task" + i;
-    task.checked = false;
-    localStorage.setItem(task.id, JSON.stringify(task));
+       
         }
     }*/
 
