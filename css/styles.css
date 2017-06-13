@@ -69,10 +69,18 @@ img{
     background-position: 1% 5%; 
 }
 h1{
+margin-bottom:5px;
     width: 40%;
     display:inline-block;
 
 }
+h3{
+ font-size: 14px;
+ font-weight:300;
+margin:0;
+width:100%;
+}
+
 #removeChecked{
     display: table-cell;
     text-align: center;
@@ -126,6 +134,10 @@ button {
     display: inline-block;
     font-size: 14px;
     float: right;
+     -webkit-margin-before: 2em;
+    -webkit-margin-after: 0.67em;
+    -webkit-margin-start: 0.67em;
+    -webkit-margin-end: 0.67em;
 }
 #add{
     margin:0;
@@ -151,4 +163,21 @@ li button {
     text-decoration: none;
     display: inline-block;
     font-size: 18px;
+}
+h3 button{
+ float: none;
+ background: transparent;
+ width:auto;
+    color: rgba(255, 255, 255, 1);
+    margin: 1%;
+
+    padding: 5px 10px 5px 10px;
+    text-align: center;
+    vertical-align: middle;
+    text-decoration: none;
+    display: inline-block;
+ 
+}
+.selected{
+	background: #8CC63E;
 }
